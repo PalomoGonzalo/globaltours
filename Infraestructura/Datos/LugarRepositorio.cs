@@ -19,12 +19,12 @@ namespace Infraestructura.Datos
 
         public async Task<Lugar> GetLugarAsync(int id)
         {
-            return await _db.Lugar.FindAsync(id);
+            return await _db.Lugar.Include(p=>p.Pais).Include(c=>c.Categoria).FirstOrDefaultAsync(l=>l.Id==id);
         }
 
         public async Task<IReadOnlyList<Lugar>> GetLugaresAsync()
         {
-            return await _db.Lugar.ToListAsync();
+            return await _db.Lugar.Include(p=>p.Pais).Include(c=>c.Categoria).ToListAsync();
         }
     }
 }
