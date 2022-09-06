@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Dtos;
+using AutoMapper;
 using Core.Entidades;
 using Core.Especificaciones;
 using Core.Interfaces;
@@ -19,9 +21,11 @@ namespace API.Controllers
         private readonly IRepositorioGenerico<Lugar> _lugarRepo;
         private readonly IRepositorioGenerico<Categoria> _categoriaRepo;
         private readonly IRepositorioGenerico<Pais> _paisRepo;
+        private readonly IMapper _mapper;
         
-        public LugaresController(IRepositorioGenerico<Lugar> lugarRepo,IRepositorioGenerico<Pais> paisRepo, IRepositorioGenerico<Categoria> categoriaRepo)
+        public LugaresController(IRepositorioGenerico<Lugar> lugarRepo,IRepositorioGenerico<Pais> paisRepo, IRepositorioGenerico<Categoria> categoriaRepo,IMapper mapper)
         {
+            _mapper = mapper;
             _paisRepo = paisRepo;
             _categoriaRepo = categoriaRepo;
             _lugarRepo = lugarRepo;
@@ -29,19 +33,20 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task< ActionResult<List<Lugar>>> GetLugares()
+        public async Task< ActionResult<IReadOnlyList<LugarDTOS>>> GetLugares()
         {
             var espec=new LugaresConPaisCategoriaEspecificacion();
             var lugares= await _lugarRepo.ObtenerTodosEspec(espec);
-            return Ok(lugares);
+            return Ok(_mapper.Map<IReadOnlyList<Lugar>,IReadOnlyList<LugarDTOS>>(lugares));
             
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Lugar>> GetLugar(int id)
+        public async Task<ActionResult<LugarDTOS>> GetLugar(int id)
         {
             var espec=new LugaresConPaisCategoriaEspecificacion(id);
-            return await _lugarRepo.ObtenerEspec(espec); 
+            var lugar= await _lugarRepo.ObtenerEspec(espec); 
+            return _mapper.Map<Lugar,LugarDTOS>(lugar);
         }
 
         [HttpGet("paises")]
