@@ -8,7 +8,7 @@ namespace API.Dtos
 {
     public class UsuarioDTOS
     {
-        public int Id { get; set; }
-        public string User { get; set; }
+        public string Usur { get; set; }
+        public string Clave { get; set; }
     }
 }
