@@ -1,11 +1,17 @@
 
+using System.Text;
 using System.Net;
 using API.Helpers;
 using Core.Interfaces;
 using Infraestructura.Datos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 // Add services to the container.
 
@@ -48,6 +54,29 @@ builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
 builder.Services.AddCors();
 
+
+// Creo los servicios para jwt 
+var key = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("SecretKey"));
+builder.Services.AddAuthentication(x=>{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;}
+).AddJwtBearer(x=>{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters{
+        ValidateIssuerSigningKey= true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
+
+
+
+
+
+
 var app = builder.Build();
 
 // Aplicar las nuevas migraciones al ejecutar la aplicacion
@@ -55,6 +84,8 @@ using(var scope=app.Services.CreateScope())
 {
     var services=scope.ServiceProvider;
     var loggerFactory=services.GetRequiredService<ILoggerFactory>();
+
+
 
     try
     {
