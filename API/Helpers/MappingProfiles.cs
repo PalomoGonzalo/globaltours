@@ -12,10 +12,17 @@ namespace API.Helpers
     {
         public MappingProfiles()
         {
+
+             //CreateMap<LugarDTOS,Lugar>();
+            CreateMap<LugarPostDTOS,Lugar>();
+                                
+
             CreateMap<Lugar,LugarDTOS>()
                                 .ForMember(d=>d.Pais,o=>o.MapFrom(s=>s.Pais.Nombre))
-                                .ForMember(d=>d.Categoria,o=>o.MapFrom(s=>s.Categoria.Nombre))
-                                .ForMember(d=>d.ImagenUrl,o=>o.MapFrom<LugarUrlResolver>());
+                                .ForMember(d=>d.Categoria,o=>o.MapFrom(s=>s.Categoria.Nombre));
+                                
+
+
         }
 
     }

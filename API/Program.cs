@@ -9,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+/// configuracion para heroku
+
+/*
+
 var port = Environment.GetEnvironmentVariable("PORT") ?? "3000";
 
 builder.WebHost.UseKestrel()
@@ -22,6 +26,8 @@ builder.WebHost.UseKestrel()
     });
 
 Console.WriteLine("puerto heroku:" +port);
+
+*/
 
 var connectionString= builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -75,6 +81,10 @@ if (app.Environment.IsDevelopment())
 */
 app.UseSwagger();
 app.UseSwaggerUI();
+
+
+/// redireccion de control error
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 app.UseHttpsRedirection();
 

@@ -6,6 +6,7 @@ using Core.Entidades;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Infraestructura.Datos
 {
     public class LugarRepositorio : ILugarRepositorio
@@ -31,5 +32,7 @@ namespace Infraestructura.Datos
 
             return await _db.Lugar.Include(p=>p.Pais).Include(c=>c.Categoria).ToListAsync();
         }
+        
+
     }
 }

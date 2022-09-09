@@ -11,6 +11,8 @@ namespace Core.Interfaces
         Task<T> ObtenerAsync(int id);
         Task<IReadOnlyList<T>> ObtenerTodosAsync();
 
+        
+
         Task<T> ObtenerEspec(IEspecificacion<T> espec);
 
         Task<IReadOnlyList<T>> ObtenerTodosEspec(IEspecificacion<T> espec);

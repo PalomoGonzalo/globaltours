@@ -19,6 +19,8 @@ namespace Infraestructura.Datos
         public DbSet<Pais> Pais { get; set; } 
         public DbSet<Categoria> Categoria { get; set; } 
 
+        public DbSet<Usuario> Usuario {get;set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) // Encargado de crear migraciones
         {
             base.OnModelCreating(modelBuilder);

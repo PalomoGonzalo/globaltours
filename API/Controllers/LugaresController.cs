@@ -17,51 +17,55 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class LugaresController : ControllerBase
     {
-        
+
         private readonly IRepositorioGenerico<Lugar> _lugarRepo;
-        private readonly IRepositorioGenerico<Categoria> _categoriaRepo;
-        private readonly IRepositorioGenerico<Pais> _paisRepo;
-        private readonly IMapper _mapper;
         
-        public LugaresController(IRepositorioGenerico<Lugar> lugarRepo,IRepositorioGenerico<Pais> paisRepo, IRepositorioGenerico<Categoria> categoriaRepo,IMapper mapper)
+        private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
+
+        public LugaresController(IRepositorioGenerico<Lugar> lugarRepo, IMapper mapper,ApplicationDbContext db)
         {
             _mapper = mapper;
-            _paisRepo = paisRepo;
-            _categoriaRepo = categoriaRepo;
             _lugarRepo = lugarRepo;
-           
+            _db=db;
+
         }
 
         [HttpGet]
-        public async Task< ActionResult<IReadOnlyList<LugarDTOS>>> GetLugares()
+        public async Task<ActionResult<IReadOnlyList<LugarDTOS>>> GetLugares()
         {
-            var espec=new LugaresConPaisCategoriaEspecificacion();
-            var lugares= await _lugarRepo.ObtenerTodosEspec(espec);
-            return Ok(_mapper.Map<IReadOnlyList<Lugar>,IReadOnlyList<LugarDTOS>>(lugares));
-            
+            var espec = new LugaresConPaisCategoriaEspecificacion();
+            var lugares = await _lugarRepo.ObtenerTodosEspec(espec);
+            return Ok(_mapper.Map<IReadOnlyList<Lugar>, IReadOnlyList<LugarDTOS>>(lugares));
+
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<LugarDTOS>> GetLugar(int id)
         {
-            var espec=new LugaresConPaisCategoriaEspecificacion(id);
-            var lugar= await _lugarRepo.ObtenerEspec(espec); 
-            return _mapper.Map<Lugar,LugarDTOS>(lugar);
+            var espec = new LugaresConPaisCategoriaEspecificacion(id);
+            var lugar = await _lugarRepo.ObtenerEspec(espec);
+            var estadoMap=_mapper.Map<Lugar, LugarDTOS>(lugar);
+            return Ok(estadoMap);
         }
 
-        [HttpGet("paises")]
-        public async Task<ActionResult<List<Pais>>> GetPaises()
+        [HttpPost("{id}")]
+        public async Task<ActionResult>PutPrecio(int id, LugarPostDTOS lugarDto)
         {
-            return Ok(await _paisRepo.ObtenerTodosAsync());
+            var auxLugar= await _db.Lugar.Where(x=>x.Id==id).SingleOrDefaultAsync();
+            if (auxLugar==null)
+            {
+                return NotFound();
+            }
+            auxLugar.GastoAproximado=lugarDto.GastoAproximado;
+            _db.Update(auxLugar);
+            await _db.SaveChangesAsync();
+            return NoContent();
         }
 
-         [HttpGet("categorias")]
-        public async Task<ActionResult<List<Pais>>> GetCategorias()
-        {
-            return Ok(await _categoriaRepo.ObtenerTodosAsync());
-        }
 
-    
+ 
+
 
     }
 }

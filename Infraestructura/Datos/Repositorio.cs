@@ -42,5 +42,7 @@ namespace Infraestructura.Datos
         {
             return EvaluadorEspecificacion<T>.GetQueary(_db.Set<T>().AsQueryable(),espec);
         }
+
+        
     }
 }
