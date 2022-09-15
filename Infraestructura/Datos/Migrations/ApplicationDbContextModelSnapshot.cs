@@ -62,6 +62,9 @@ namespace Infraestructura.Datos.Migrations
                     b.Property<int>("PaisId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Valoracion")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoriaId");

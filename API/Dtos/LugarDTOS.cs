@@ -21,5 +21,7 @@ namespace API.Dtos
         public string Pais{get; set;}
 
         public string Categoria { get; set; }
+
+        public int Valoracion{ get; set;}
     }
 }

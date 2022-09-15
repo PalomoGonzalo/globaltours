@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infraestructura.Datos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220908224125_CreacionBaseUsuarios")]
-    partial class CreacionBaseUsuarios
+    [Migration("20220915142818_creacionDeValoracion")]
+    partial class creacionDeValoracion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,9 +46,6 @@ namespace Infraestructura.Datos.Migrations
                     b.Property<int>("CategoriaId")
                         .HasColumnType("int");
 
-                     b.Property<int>("Valoracion")
-                        .HasColumnType("int");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -65,6 +62,9 @@ namespace Infraestructura.Datos.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<int>("PaisId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Valoracion")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

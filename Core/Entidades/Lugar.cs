@@ -22,6 +22,8 @@ namespace Core.Entidades
 
         public int PaisId { get; set; }
 
+        public int Valoracion{ get; set;}
+
         [ForeignKey("PaisId")]
         public Pais Pais{get; set;}
 
@@ -29,6 +31,8 @@ namespace Core.Entidades
 
         [ForeignKey("CategoriaId")]
         public Categoria Categoria { get; set; }
+
+        
 
 
     }

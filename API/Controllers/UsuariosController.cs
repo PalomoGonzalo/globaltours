@@ -12,6 +12,7 @@ using Infraestructura.Datos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using AutoMapper;
 
 namespace API.Controllers
 {
@@ -21,10 +22,12 @@ namespace API.Controllers
 
         private readonly ApplicationDbContext _db;
         private readonly IRepositorioGenerico<Usuario> _usuarioRepo;
+        
 
         public UsuariosController(ApplicationDbContext db, IRepositorioGenerico<Usuario> usuarioRepo)
         {
             this._usuarioRepo = usuarioRepo;
+        
             _db = db;
         }
 
@@ -48,9 +51,10 @@ namespace API.Controllers
             await _db.SaveChangesAsync();
             return Ok(new UsuarioDTOS
             {
-                User = usuario.User,
-                Id = usuario.Id
+                Id = usuario.Id,
+                User = usuario.User
             });
+          
         }
 
 

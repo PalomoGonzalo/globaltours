@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 /// configuracion para heroku
 
 
-
+/*
 var port = Environment.GetEnvironmentVariable("PORT") ?? "3000";
 
 builder.WebHost.UseKestrel()
@@ -33,7 +33,7 @@ builder.WebHost.UseKestrel()
 
 Console.WriteLine("puerto heroku:" +port);
 
-
+*/
 
 var connectionString= builder.Configuration.GetConnectionString("DefaultConnection");
 
