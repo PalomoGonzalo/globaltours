@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 /// configuracion para heroku
 
 
-/*
+
 var port = Environment.GetEnvironmentVariable("PORT") ?? "3000";
 
 builder.WebHost.UseKestrel()
@@ -33,7 +33,7 @@ builder.WebHost.UseKestrel()
 
 Console.WriteLine("puerto heroku:" +port);
 
-*/
+
 
 var connectionString= builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -52,15 +52,26 @@ builder.Services.AddScoped(typeof(IRepositorioGenerico<>),(typeof(Repositorio<>)
 
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
-builder.Services.AddCors();
+ builder.Services.AddCors( x => x.AddPolicy("EnableCors", builder => {
+                builder.SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .AllowAnyOrigin()
+                        //.WithOrigins("https://codestack.com")
+                        .AllowAnyMethod()
+                        //.WithMethods("PATCH", "DELETE", "GET", "HEADER")
+                        .AllowAnyHeader();
+                        //.WithHeaders("X-Token", "content-type")
+            }));
+
+
 
 
 // Creo los servicios para jwt 
 var key = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("SecretKey"));
-builder.Services.AddAuthentication(x=>{
+builder.Services.AddAuthentication(x=>
+{
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;}
-).AddJwtBearer(x=>{
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer(x=>{
     x.RequireHttpsMetadata = false;
     x.SaveToken = true;
     x.TokenValidationParameters = new TokenValidationParameters{
@@ -84,8 +95,6 @@ using(var scope=app.Services.CreateScope())
 {
     var services=scope.ServiceProvider;
     var loggerFactory=services.GetRequiredService<ILoggerFactory>();
-
-
 
     try
     {
@@ -119,9 +128,10 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 app.UseHttpsRedirection();
 
-app.UseCors(x=> x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseStaticFiles();
+
+app.UseCors("EnableCors");
 
 app.UseAuthorization();
 

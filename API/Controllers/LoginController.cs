@@ -33,7 +33,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginDTOS login)
+        public async Task<IActionResult> Login([FromBody]LoginDTOS login)
         {
             if (login.Clave is null && login.User is null)
             {
