@@ -66,7 +66,8 @@ namespace API.Controllers
                 var createdToken = tokenHandler.CreateToken(tokenDescriptor);
 
                 string bearerToken = tokenHandler.WriteToken(createdToken);
-                return Ok(bearerToken);
+               
+                return Ok(new Token{TokenJWT=bearerToken});
                 
             }
             else

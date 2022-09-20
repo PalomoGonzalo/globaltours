@@ -32,7 +32,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CrearUsuario(Usuario usuario)
+        public async Task<IActionResult> CrearUsuario([FromBody]Usuario usuario)
         {
             if (usuario.User== null && usuario.Clave==null)
             {
