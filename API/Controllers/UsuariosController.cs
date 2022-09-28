@@ -22,18 +22,23 @@ namespace API.Controllers
 
         private readonly ApplicationDbContext _db;
         private readonly IRepositorioGenerico<Usuario> _usuarioRepo;
-        
+        private readonly IMapper _mapper;
 
-        public UsuariosController(ApplicationDbContext db, IRepositorioGenerico<Usuario> usuarioRepo)
+        public UsuariosController(ApplicationDbContext db, IRepositorioGenerico<Usuario> usuarioRepo, IMapper mapper)
         {
             this._usuarioRepo = usuarioRepo;
-        
+            this._mapper = mapper;
             _db = db;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CrearUsuario([FromBody]Usuario usuario)
+        public async Task<IActionResult> CrearUsuario([FromBody]UsuarioPasswordDTOS usuarioDto)
         {
+
+          
+            var usuario =_mapper.Map<UsuarioPasswordDTOS,Usuario >(usuarioDto);
+            
+
             if (usuario.User== null && usuario.Clave==null)
             {
                 return BadRequest("Error faltan datos");

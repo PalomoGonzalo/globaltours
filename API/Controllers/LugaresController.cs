@@ -64,5 +64,10 @@ namespace API.Controllers
         }
 
 
+        [HttpPost]
+
+        public async Task <ActionResult> CrearLugar 
+
+
     }
 }

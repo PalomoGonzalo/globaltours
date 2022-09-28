@@ -16,6 +16,7 @@ namespace API.Helpers
              //CreateMap<LugarDTOS,Lugar>();
             CreateMap<LugarPostDTOS,Lugar>();
             CreateMap<Usuario,UsuarioDTOS>();
+            CreateMap<Usuario,UsuarioPasswordDTOS>().ReverseMap();
 
             CreateMap<Lugar,LugarDTOS>()
                                 .ForMember(d=>d.Pais,o=>o.MapFrom(s=>s.Pais.Nombre))

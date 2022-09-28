@@ -1,0 +1,30 @@
+git pull origin master -r
+docker build -t palomomatias/globaltours . /crea la imagen
+docker push palomomatias/globaltours
+docker build -t registry.heroku.com/globaltourspalomo/web .
+heroku container:push -a globaltourspalomo web
+heroku container:release
+heroku container:release -a globaltourspalomo web
+
+
+//
+
+dotnet publish -c Release -o out
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+WORKDIR webapp
+EXPOSE 80
+EXPOSE 5024
+
+COPY ./*csproj ./
+RUN dotnet restore
+
+COPY . .
+RUN dotnet publish -c Release -o out
+
+#Build image
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0
+WORKDIR /webapp
+COPY --from=build /webapp/out .
+
+ENTRYPOINT ["dotnet","DockerDotnetApp.dll"]
