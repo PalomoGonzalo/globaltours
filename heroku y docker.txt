@@ -1,3 +1,10 @@
+docker build -t palomomatias/globaltours ./
+docker run -p 8080:80 -d palomomatias/globaltours
+docker build -t registry.heroku.com/globaltourspalomo/web .
+heroku container:push -a globaltourspalomo web
+
+
+
 git pull origin master -r
 docker build -t palomomatias/globaltours . /crea la imagen
 docker push palomomatias/globaltours
