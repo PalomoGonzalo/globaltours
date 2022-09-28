@@ -1,7 +1,9 @@
 docker build -t palomomatias/globaltours ./
 docker run -p 8080:80 -d palomomatias/globaltours
 docker build -t registry.heroku.com/globaltourspalomo/web .
-heroku container:push -a globaltourspalomo web
+heroku container:login
+heroku container:push -a peliculaspalomo web
+heroku container:release -a peliculaspalomo web
 
 
 
