@@ -36,6 +36,14 @@ namespace API.Controllers
             return Ok(await _paisRepo.ObtenerAsync(id));
         }
 
+        /*
+        public async Task<Pais> GetPaise(int id)
+        {
+            return (await _paisRepo.ObtenerAsync(id));
+        }
+*/
+
+
         
     }
 }

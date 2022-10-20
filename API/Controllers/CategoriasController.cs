@@ -29,11 +29,13 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Categoria>> GetPaises(int id)
+        public async Task<ActionResult<Categoria>> GetCategorias(int id)
         {
             return Ok(await _categoriaRepo.ObtenerAsync(id));
         }
 
+
+        
 
     }
 }

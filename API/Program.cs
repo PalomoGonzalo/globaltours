@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
+using Core.Entidades;
+using API.Controllers;
+using Infraestructura.Repositorios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,11 +51,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ILugarRepositorio, LugarRepositorio>();
+builder.Services.AddScoped<ICategoriaRepositorio,CategoriaRepositorio>();
+builder.Services.AddScoped<IPaisRepositorio,PaisRepositorio>();
 builder.Services.AddScoped(typeof(IRepositorioGenerico<>),(typeof(Repositorio<>)));
 
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
- builder.Services.AddCors( x => x.AddPolicy("EnableCors", builder => {
+builder.Services.AddCors( x => x.AddPolicy("EnableCors", builder => {
                 builder.SetIsOriginAllowedToAllowWildcardSubdomains()
                         .AllowAnyOrigin()
                         //.WithOrigins("https://codestack.com")
