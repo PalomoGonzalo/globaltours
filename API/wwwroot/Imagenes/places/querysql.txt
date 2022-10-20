@@ -1,0 +1,16 @@
+SELECT (JSON_VALUE (PICKER,'$.Legajo')),(JSON_VALUE (PICKER,'$.Nombre')) ,count (*)  FROM t_pedidos where JSON_VALUE(ENTREGA,'$.Fecha_Entrega')='2022-10-17T00:00:00'
+GROUP BY (JSON_VALUE (PICKER,'$.Legajo')), (JSON_VALUE (PICKER,'$.Nombre')) ORDER BY COUNT(*) DESC;
+
+SELECT * FROM T_PEDIDOS;
+
+
+
+
+SELECT * FROM T_PEDIDOS_PICKING WHERE ID_PEDIDO = 19262547;
+
+        [HttpGet("Filtro")]
+        public async Task<ActionResult<IReadOnlyList<LugarDTOS>> >GetFiltro([FromHeader]string filtro)
+        {
+            var listafiltrada= await _db.Lugar.Include(p=>p.Pais).Where(c=>c.Nombre.Contains(filtro)|| c.Pais.Nombre.Contains(filtro)).ToListAsync();
+            return Ok(_mapper.Map<IReadOnlyList<Lugar>, IReadOnlyList<LugarDTOS>>(listafiltrada));
+        }
